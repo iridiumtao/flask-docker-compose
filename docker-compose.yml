@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+
+  virtual-to-news:
+    build: ./virtual-to-news
+    container_name: FDC-virtual-to-news
+    volumes:
+      # 定義路徑、全域變數的檔案
+      - "./define.py:/vtn/define.py"
+    # containers 及 host 都可以 access
+    ports:
+      - "25501:25501"
+
+
+  file-server:
+    build: ./file-server
+    container_name: FDC-file-server
+    volumes:
+    # 絕對路徑或相對路徑皆可。例如/home或./assests
+    # host:container
+      - "/home/oud/hennowallpapers:/app/assests"
+      # 定義路徑、全域變數的檔案
+      - "./define.py:/files/define.py"
+    ports:
+      - "25503:25503"
+
+
+  voice-generating-server:
+    build: ./voice-generator
+    container_name: FDC-voice-generating-server
+    volumes:
+      # 定義路徑、全域變數的檔案
+      - "./define.py:/voice/define.py"
+    # 只有 containers 可以存取
+    # 存取方式是 http://<service-name>:25502/
+    # e.g. http://voice-generating-server:25502/image?date=2022-08-17&additional_info=some_info
+    # 沒測試過，但是 args 中如果有空格應該會需要 URL encoding
+    expose:
+      - 25502
+
+  visual-generating-server:
+    build: ./visual-generator
+    container_name: FDC-visual-generating-server
+    volumes:
+      # 定義路徑、全域變數的檔案
+      - "./define.py:/visual/define.py"
+    expose:
+      - 25504
+
+  news-generating-server:
+    build: ./news-generator
+    container_name: FDC-news-generating-server
+    volumes:
+      # 定義路徑、全域變數的檔案
+      - "./define.py:/news/define.py"
+    expose:
+      - 25505
