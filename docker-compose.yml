@@ -19,7 +19,8 @@ services:
     volumes:
     # 絕對路徑或相對路徑皆可。例如/home或./assests
     # host:container
-      - "/home/oud/hennowallpapers:/app/assests"
+      - "./assets:/files/assets"
+      - "./outputs:/files/outputs"
       # 定義路徑、全域變數的檔案
       - "./define.py:/files/define.py"
     ports:
@@ -32,6 +33,7 @@ services:
     volumes:
       # 定義路徑、全域變數的檔案
       - "./define.py:/voice/define.py"
+      - "./outputs:/voice/outputs"
     # 只有 containers 可以存取
     # 存取方式是 http://<service-name>:25502/
     # e.g. http://voice-generating-server:25502/image?date=2022-08-17&additional_info=some_info
@@ -45,6 +47,7 @@ services:
     volumes:
       # 定義路徑、全域變數的檔案
       - "./define.py:/visual/define.py"
+      - "./outputs:/visual/outputs"
     expose:
       - 25504
 
@@ -53,6 +56,8 @@ services:
     container_name: FDC-news-generating-server
     volumes:
       # 定義路徑、全域變數的檔案
+      - "./assets:/news/assets/article"
       - "./define.py:/news/define.py"
+      - "./outputs:/news/outputs"
     expose:
       - 25505

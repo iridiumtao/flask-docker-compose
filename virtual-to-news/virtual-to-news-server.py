@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import time
 import requests
+import uuid
 from define import news_server_url, voice_server_url, visual_server_url, virtual_to_news_host, virtual_to_news_port, is_debug_mode
 
 app = Flask(__name__)
@@ -45,7 +46,8 @@ def news():
                          data={'date': date, 
                                'date_interval': date_interval, 
                                'topic': topic, 
-                               'additional_info': additional_info})
+                               'additional_info': additional_info,
+                               'uuid': str(uuid.uuid4())})
     return news.text
 
 @app.route('/topic', methods=['POST'])
